@@ -6,9 +6,10 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-subdirs(test readme-helper)
-
-include_directories(${sdptransform_SOURCE_DIR}/include)
+option(SDPTRANSFORM_BUILD_TEST_AND_README "Build test and readme-helper subdirs" OFF)
+if(SDPTRANSFORM_BUILD_TEST_AND_README)
+	subdirs(test readme-helper)
+endif()
 
 set(
 	SOURCE_FILES
@@ -20,10 +21,11 @@ set(
 set(
 	HEADER_FILES
 	include/sdptransform.hpp
-	include/json.hpp
 )
 
 add_library(sdptransform STATIC ${SOURCE_FILES} ${HEADER_FILES})
+
+target_include_directories(sdptransform PUBLIC ${sdptransform_SOURCE_DIR}/include)
 
 install(TARGETS sdptransform DESTINATION lib)
 install(FILES ${HEADER_FILES} DESTINATION include/sdptransform)
